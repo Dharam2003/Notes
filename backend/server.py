@@ -76,6 +76,7 @@ class NoteResponse(BaseModel):
     title: str
     description: str
     category: str
+    pdf_file_id: str
     pdf_filename: str
     upload_date: str
     share_link: str
