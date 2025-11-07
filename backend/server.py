@@ -204,6 +204,7 @@ async def get_notes(
             title=note['title'],
             description=note['description'],
             category=note['category'],
+            pdf_file_id=note['pdf_file_id'],
             pdf_filename=note['pdf_filename'],
             upload_date=note['upload_date'].isoformat(),
             share_link=note['share_link'],
