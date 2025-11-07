@@ -219,6 +219,7 @@ class StudyVaultAPITester:
         if success:
             print(f"   Note title: {response.get('title', 'N/A')}")
             self.test_file_id = response.get('pdf_file_id')
+            print(f"   PDF File ID: {self.test_file_id}")
             return True
         return False
 
