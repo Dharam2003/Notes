@@ -114,3 +114,134 @@ code {
         border-bottom-color: inherit;
     }
 }
+
+/* Pinterest-style Masonry Grid */
+.masonry-grid {
+  display: flex;
+  margin-left: -16px;
+  width: auto;
+}
+
+.masonry-grid_column {
+  padding-left: 16px;
+  background-clip: padding-box;
+}
+
+.masonry-grid_column > div {
+  margin-bottom: 16px;
+}
+
+/* Pinterest-style card hover effect */
+.pinterest-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pinterest-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.pinterest-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.card-overlay {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Category color gradients - Pinterest style */
+.category-mathematics {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.category-science {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.category-computer-science {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.category-engineering {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.category-business {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.category-literature {
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+}
+
+.category-history {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.category-languages {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.category-arts {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.category-other {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+/* Pinterest red accent */
+.pinterest-red {
+  background-color: hsl(var(--pinterest-red));
+  color: white;
+}
+
+.pinterest-red:hover {
+  background-color: hsl(0 80% 42%);
+}
+
+/* Smooth animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Search bar Pinterest style */
+.pinterest-search {
+  border-radius: 24px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.pinterest-search:focus {
+  border-color: hsl(var(--pinterest-red));
+  box-shadow: 0 4px 12px rgba(230, 0, 35, 0.15);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .masonry-grid {
+    margin-left: -12px;
+  }
+  
+  .masonry-grid_column {
+    padding-left: 12px;
+  }
+  
+  .masonry-grid_column > div {
+    margin-bottom: 12px;
+  }
+}
