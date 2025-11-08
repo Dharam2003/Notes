@@ -157,36 +157,32 @@ code {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.category-science {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
-.category-computer-science {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.category-engineering {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-
-.category-business {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-}
-
-.category-literature {
-  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+.category-gkgi {
+  background: linear-gradient(135deg, #13547a 0%, #80d0c7 100%);
 }
 
 .category-history {
   background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
 }
 
-.category-languages {
+.category-science {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.category-geography {
+  background: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+}
+
+.category-economics {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.category-english {
   background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
 }
 
-.category-arts {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+.category-political {
+  background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
 }
 
 .category-other {

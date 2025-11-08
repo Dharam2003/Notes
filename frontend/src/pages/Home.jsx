@@ -327,7 +327,7 @@ const Home = () => {
       <footer className="border-t border-gray-200 mt-12 py-8 bg-white">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-600 text-sm">
-            © 2024 Study Vault • Your organized study companion
+            © 2025 Bipul Sir notes • Your organized study companion • Designed by Dharam
           </p>
         </div>
       </footer>

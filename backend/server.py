@@ -39,14 +39,13 @@ api_router = APIRouter(prefix="/api")
 # Predefined categories
 PREDEFINED_CATEGORIES = [
     "Mathematics",
-    "Science",
-    "Computer Science",
-    "Engineering",
-    "Business",
-    "Literature",
+    "GKGI",
     "History",
-    "Languages",
-    "Arts",
+    "Science",
+    "Geography",
+    "Economics",
+    "English",
+    "Political",
     "Other"
 ]
 
