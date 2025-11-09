@@ -61,7 +61,7 @@ const AdminDashboard = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API}/categories`);
+      const response = await axios.get(`${API}/api/categories`);
       setCategories(response.data.categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
