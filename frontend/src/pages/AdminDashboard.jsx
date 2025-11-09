@@ -117,7 +117,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem("admin_token");
       await axios.put(
-        `${API}/notes/${editingNote.id}`,
+        `${API}/api/notes/${editingNote.id}`,
         {
           title: editingNote.title,
           description: editingNote.description,
