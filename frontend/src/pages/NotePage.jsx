@@ -7,7 +7,13 @@ import { ArrowLeft, Share2, Download, BookOpen, Home } from "lucide-react";
 import { toast } from "sonner";
 
 const NotePage = () => {
-  const { noteId } = useParams();
+  // support either /note/:noteId OR /:category/:slug
+  const params = useParams();
+  const { noteId } = params;
+  // category and slug from pretty URL
+  const categoryParam = params.category;
+  const slugParam = params.slug;
+
   const navigate = useNavigate();
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,12 +21,20 @@ const NotePage = () => {
 
   useEffect(() => {
     fetchNote();
-  }, [noteId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [noteId, categoryParam, slugParam]);
 
   const fetchNote = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API}/notes/${noteId}`);
+      let response;
+      if (noteId) {
+        response = await axios.get(`${API}/notes/${noteId}`);
+      } else if (categoryParam && slugParam) {
+        response = await axios.get(`${API}/notes/by-link/${categoryParam}/${slugParam}`);
+      } else {
+        throw new Error("Invalid route");
+      }
       setNote(response.data);
       setPdfUrl(`${API}/pdf/${response.data.pdf_file_id}`);
     } catch (error) {
@@ -33,7 +47,10 @@ const NotePage = () => {
   };
 
   const copyShareLink = () => {
-    const link = window.location.href;
+    if (!note) return;
+    const categorySlug = note.category_slug || (note.category || "").toLowerCase().replace(/\s+/g, '-');
+    const slug = note.slug || note.id;
+    const link = `${window.location.origin}/${categorySlug}/${slug}`;
     navigator.clipboard.writeText(link);
     toast.success("Share link copied!");
   };

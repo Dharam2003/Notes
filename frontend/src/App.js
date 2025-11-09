@@ -16,8 +16,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Pretty slug route (category/slug) */}
+          <Route path="/:category/:slug" element={<NotePage />} />
+
+          {/* Backwards-compatible route by id */}
           <Route path="/note/:noteId" element={<NotePage />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </BrowserRouter>
       <Toaster />

@@ -54,11 +54,14 @@ const Home = () => {
 
   const filteredNotes = notes.filter(note => 
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    note.description.toLowerCase().includes(searchQuery.toLowerCase())
+    (note.description || "").toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const copyShareLink = (noteId) => {
-    const link = `${window.location.origin}/note/${noteId}`;
+  const copyShareLink = (note) => {
+    // use category_slug and slug returned from backend
+    const categorySlug = note.category_slug || (note.category || "").toLowerCase().replace(/\s+/g, '-');
+    const slug = note.slug || note.id;
+    const link = `${window.location.origin}/${categorySlug}/${slug}`;
     navigator.clipboard.writeText(link);
     toast.success("Share link copied!");
   };
@@ -271,7 +274,7 @@ const Home = () => {
                       className="bg-white text-gray-900 hover:bg-gray-100 rounded-full"
                       onClick={(e) => {
                         e.stopPropagation();
-                        copyShareLink(note.id);
+                        copyShareLink(note);
                       }}
                       data-testid={`share-note-${note.id}`}
                     >

@@ -15,6 +15,7 @@ import jwt
 from passlib.context import CryptContext
 import io
 from bson import ObjectId
+import re
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -49,6 +50,17 @@ PREDEFINED_CATEGORIES = [
     "Other"
 ]
 
+# Simple slugify (no external dependency)
+def slugify(text: str) -> str:
+    text = text.strip().lower()
+    # replace non-alphanumeric with hyphens
+    text = re.sub(r'[^a-z0-9]+', '-', text)
+    # remove leading/trailing hyphens
+    text = text.strip('-')
+    # collapse multiple hyphens
+    text = re.sub(r'-{2,}', '-', text)
+    return text or str(uuid.uuid4())[:8]
+
 # Models
 class AdminLogin(BaseModel):
     password: str
@@ -64,10 +76,12 @@ class Note(BaseModel):
     title: str
     description: Optional[str] = ""
     category: str
+    category_slug: str = ""
+    slug: str = ""
     pdf_file_id: str
     pdf_filename: str
     upload_date: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    share_link: str
+    share_link: str = ""
     order: int = 0
 
 class NoteResponse(BaseModel):
@@ -75,6 +89,8 @@ class NoteResponse(BaseModel):
     title: str
     description: str
     category: str
+    category_slug: str
+    slug: str
     pdf_file_id: str
     pdf_filename: str
     upload_date: str
@@ -144,16 +160,28 @@ async def upload_note(
         metadata={"content_type": "application/pdf"}
     )
     
+    # Create slug and ensure uniqueness within category
+    category_slug = slugify(category)
+    base_slug = slugify(title)
+    slug = base_slug
+    counter = 1
+    while await db.notes.find_one({"category_slug": category_slug, "slug": slug}):
+        slug = f"{base_slug}-{counter}"
+        counter += 1
+
     # Create note document
     note_id = str(uuid.uuid4())
+    share_link = f"{category_slug}/{slug}"
     note = Note(
         id=note_id,
         title=title,
         description=description,
         category=category,
+        category_slug=category_slug,
+        slug=slug,
         pdf_file_id=str(file_id),
         pdf_filename=file.filename,
-        share_link=note_id
+        share_link=share_link
     )
     
     # Save to database
@@ -161,7 +189,7 @@ async def upload_note(
     doc['upload_date'] = doc['upload_date'].isoformat()
     await db.notes.insert_one(doc)
     
-    return {"message": "Note uploaded successfully", "note_id": note_id}
+    return {"message": "Note uploaded successfully", "note_id": note_id, "share_link": share_link}
 
 @api_router.get("/notes", response_model=List[NoteResponse])
 async def get_notes(
@@ -201,8 +229,10 @@ async def get_notes(
         response.append(NoteResponse(
             id=note['id'],
             title=note['title'],
-            description=note['description'],
+            description=note.get('description', ""),
             category=note['category'],
+            category_slug=note.get('category_slug', slugify(note['category'])),
+            slug=note.get('slug', note['id']),
             pdf_file_id=note['pdf_file_id'],
             pdf_filename=note['pdf_filename'],
             upload_date=note['upload_date'].isoformat(),
@@ -224,8 +254,31 @@ async def get_note(note_id: str):
     return NoteResponse(
         id=note['id'],
         title=note['title'],
-        description=note['description'],
+        description=note.get('description', ""),
         category=note['category'],
+        category_slug=note.get('category_slug', slugify(note['category'])),
+        slug=note.get('slug', note['id']),
+        pdf_file_id=note['pdf_file_id'],
+        pdf_filename=note['pdf_filename'],
+        upload_date=note['upload_date'].isoformat(),
+        share_link=note['share_link'],
+        order=note.get('order', 0)
+    )
+
+@api_router.get("/notes/by-link/{category_slug}/{slug}")
+async def get_note_by_slug(category_slug: str, slug: str):
+    note = await db.notes.find_one({"category_slug": category_slug, "slug": slug}, {"_id": 0})
+    if not note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    if isinstance(note['upload_date'], str):
+        note['upload_date'] = datetime.fromisoformat(note['upload_date'])
+    return NoteResponse(
+        id=note['id'],
+        title=note['title'],
+        description=note.get('description', ""),
+        category=note['category'],
+        category_slug=note.get('category_slug', category_slug),
+        slug=note.get('slug', slug),
         pdf_file_id=note['pdf_file_id'],
         pdf_filename=note['pdf_filename'],
         upload_date=note['upload_date'].isoformat(),
@@ -253,7 +306,9 @@ async def update_note(
     if note_update.category is not None:
         if note_update.category not in PREDEFINED_CATEGORIES:
             raise HTTPException(status_code=400, detail="Invalid category")
+        # update category and category_slug; keep slug same
         update_data["category"] = note_update.category
+        update_data["category_slug"] = slugify(note_update.category)
     if note_update.order is not None:
         update_data["order"] = note_update.order
     
