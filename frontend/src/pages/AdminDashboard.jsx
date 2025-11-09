@@ -141,7 +141,7 @@ const AdminDashboard = () => {
 
     try {
       const token = localStorage.getItem("admin_token");
-      await axios.delete(`${API}/notes/${noteId}`, {
+      await axios.delete(`${API}/api/notes/${noteId}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       toast.success("Note deleted successfully!");
