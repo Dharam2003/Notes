@@ -41,7 +41,7 @@ const AdminDashboard = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API}/auth/login`, { password });
+      const response = await axios.post(`${API}/api/auth/login`, { password });
       localStorage.setItem("admin_token", response.data.access_token);
       setIsAuthenticated(true);
       toast.success("Login successful!");
