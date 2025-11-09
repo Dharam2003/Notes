@@ -21,7 +21,6 @@ const NotePage = () => {
 
   useEffect(() => {
     fetchNote();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [noteId, categoryParam, slugParam]);
 
   const fetchNote = async () => {
