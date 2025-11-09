@@ -71,7 +71,7 @@ const AdminDashboard = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem("admin_token");
-      const response = await axios.get(`${API}/notes`);
+      const response = await axios.get(`${API}/api/notes`);
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching notes:", error);
