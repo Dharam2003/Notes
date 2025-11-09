@@ -94,7 +94,7 @@ const AdminDashboard = () => {
       formData.append("file", uploadForm.file);
 
       const token = localStorage.getItem("admin_token");
-      await axios.post(`${API}/notes/upload`, formData, {
+      await axios.post(`${API}/api/notes/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Authorization": `Bearer ${token}`
