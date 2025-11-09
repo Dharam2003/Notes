@@ -26,7 +26,8 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API}/categories`);
+      // FIX: Prepend /api/ to the endpoint
+      const response = await axios.get(`${API}/api/categories`);
       setCategories(["All", ...response.data.categories]);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -42,7 +43,8 @@ const Home = () => {
       if (selectedCategory !== "All") {
         params.category = selectedCategory;
       }
-      const response = await axios.get(`${API}/notes`, { params });
+      // FIX: Prepend /api/ to the endpoint
+      const response = await axios.get(`${API}/api/notes`, { params });
       setNotes(response.data);
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -68,7 +70,8 @@ const Home = () => {
 
   const downloadPDF = async (fileId, filename) => {
     try {
-      const response = await axios.get(`${API}/pdf/${fileId}`, {
+      // FIX: Prepend /api/ to the endpoint
+      const response = await axios.get(`${API}/api/pdf/${fileId}`, {
         responseType: 'blob'
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));

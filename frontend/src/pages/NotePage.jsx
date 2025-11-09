@@ -29,14 +29,17 @@ const NotePage = () => {
       setLoading(true);
       let response;
       if (noteId) {
-        response = await axios.get(`${API}/notes/${noteId}`);
+        // FIX: Prepend /api/ to the endpoint
+        response = await axios.get(`${API}/api/notes/${noteId}`);
       } else if (categoryParam && slugParam) {
-        response = await axios.get(`${API}/notes/by-link/${categoryParam}/${slugParam}`);
+        // FIX: Prepend /api/ to the endpoint
+        response = await axios.get(`${API}/api/notes/by-link/${categoryParam}/${slugParam}`);
       } else {
         throw new Error("Invalid route");
       }
       setNote(response.data);
-      setPdfUrl(`${API}/pdf/${response.data.pdf_file_id}`);
+      // FIX: Prepend /api/ to the endpoint
+      setPdfUrl(`${API}/api/pdf/${response.data.pdf_file_id}`);
     } catch (error) {
       console.error("Error fetching note:", error);
       toast.error("Note not found");

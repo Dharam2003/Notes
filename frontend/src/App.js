@@ -8,7 +8,9 @@ import NotePage from "./pages/NotePage";
 import { Toaster } from "./components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-export const API = `${BACKEND_URL}/api`;
+// CHANGE MADE HERE: Removed the trailing '/api' from the base URL.
+// API calls will now explicitly prepend '/api/' to endpoints.
+export const API = BACKEND_URL;
 
 function App() {
   return (
